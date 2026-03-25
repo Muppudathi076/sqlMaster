@@ -1,0 +1,67 @@
+import axiosInstance from "./axiosInstance"
+
+export const loginApi = async (Email: string, Password: string) => {
+  const response = await axiosInstance.post("/login/", {
+    Email,
+    Password,
+  })
+
+  return response.data
+}
+
+export const registerApi = async (Name:string,Email: string, Password: string) => {
+  const response = await axiosInstance.post("/register/", {
+    Name,
+    Email,
+    Password,
+  })
+
+  return response.data
+}
+
+export const UpdatedPasswordApi = async(email:string,new_password:string,token:string)=>{
+    console.log("enter the api session")
+    const response = await axiosInstance.put("/change/password/",{
+        email,new_password
+    },        
+    {headers:{
+            Authorization:`Bearer ${token}`
+        } } )
+     return response.data
+}
+
+export const UserGetApi = async(token:string)=>{
+    const response = await axiosInstance.get(`/user/details/`,
+        {headers:{
+            Authorization:`Bearer ${token}`
+        } }
+    )
+    return response.data
+}
+
+export const questionapiApi = async (id:number,token:string) => {
+  const response = await axiosInstance.get(`/questions/${id}`, {
+        headers:{
+            Authorization:`Bearer ${token}`
+        }   
+    })
+  return response.data
+}
+
+export const valuesCheckingApi = async (id:number,query:string,token:string) => {
+  const response = await axiosInstance.post(`/value/checking/${id}`,{query}, {
+        headers:{
+            Authorization:`Bearer ${token}`
+        }   
+    })
+  return response.data
+}
+
+export const userdashboardApi = async (token:string) => {
+  const response = await axiosInstance.get("user/dashboard/", {
+        headers:{
+            Authorization:`Bearer ${token}`
+        }   
+    })
+  return response.data
+}

@@ -14,13 +14,19 @@ class Login(models.Model): ## for register
 
 class SQLQuestion(models.Model):
     question = models.TextField()
+    methods = models.TextField()
     difficulty = models.CharField(max_length=10)
     model_no = models.IntegerField()  
     answer = models.TextField()
-    schema = models.TextField() 
+    option = models.TextField() 
     sample_data = models.JSONField()
     
 class UserProgress(models.Model):
     user = models.ForeignKey(Login, on_delete=models.CASCADE)
     question = models.ForeignKey(SQLQuestion, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
+    
+class DailyUsage(models.Model):
+    user = models.ForeignKey(Login, on_delete=models.CASCADE)
+    date = models.DateField()
+    spend_time = models.DurationField(default=timedelta)

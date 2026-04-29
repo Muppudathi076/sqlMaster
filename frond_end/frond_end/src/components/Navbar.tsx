@@ -1,17 +1,35 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { Menu, X, LogOut } from "lucide-react"
+interface MenuItem {
+  name: string
+  path: string
+  // icon: React.ReactNode;
+  // children?: { name: string; path: string }[]
+}
 
 function Navbar({ openLogout }: any) {
   const userName = localStorage.getItem("user")
   const [mobileMenu, setMobileMenu] = useState(false)
-
+  const role = localStorage.getItem("role")
   const adminMenu = [
     { name: "Dashboard", path: "admin/dashboard" },
     // { name: "Admin", path: "admin/create" },
     { name: "User List", path: "admin/userlist" },
     { name: "Models", path: "admin/modalpage" },
   ]
+    const userMenu = [
+      { name: "Dashboard", path: "/api/dashboard" },
+      { name: "Models",  path:"/api/model"}
+    ]
+
+  let menuItems: MenuItem[] = []
+
+  if (role === "admin") {
+    menuItems = adminMenu
+  }  else if (role === "user") {
+    menuItems = userMenu
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-md px-4 py-3 relative">
@@ -23,7 +41,7 @@ function Navbar({ openLogout }: any) {
         </p>
 
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-6">
-          {adminMenu.map((item, index) => (
+          {menuItems.map((item, index) => (
             <NavLink
               key={index}
               to={item.path}
@@ -63,7 +81,7 @@ function Navbar({ openLogout }: any) {
 
       {mobileMenu && (
         <div className="md:hidden mt-3 flex flex-col gap-3 bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-          {adminMenu.map((item, index) => (
+          {menuItems.map((item, index) => (
             <NavLink
               key={index}
               to={item.path}

@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { Users, User, LogOut, GraduationCap,Code   } from "lucide-react"
-import { Menu } from "lucide-react"
+import { Menu,X } from "lucide-react"
 import { RxDashboard } from "react-icons/rx"
-// import { Sun, Moon } from "lucide-react"
+
 interface sidebar {
   isOpen :boolean,
   openLogout : () => void
@@ -20,12 +20,9 @@ interface MenuItem {
   children?: { name: string; path: string }[]
 }
 
-// function Sidebar({ isOpen, openLogout,toggleTheme, darkMode }:sidebar) {
-function Sidebar({ isOpen, openLogout,isCollapsed,setIsCollapsed  }:sidebar) {
-
+function Sidebar({ isOpen, openLogout,isCollapsed,setIsCollapsed  }:sidebar ) {
   const role = localStorage.getItem("role")
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-  // const [isCollapsed, setIsCollapsed] = useState(false)
   const toggleDropdown = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
   }
@@ -41,8 +38,7 @@ function Sidebar({ isOpen, openLogout,isCollapsed,setIsCollapsed  }:sidebar) {
       icon: <Code   size={20} />,     
     children: [
       { name: "Level 1", path: "/api/model/1" },
-      // { name: "Level 2", path: "/api/model/2" },
-      // { name: "Level 3", path: "/api/model/3" },
+      { name: "Level 2", path: "/api/model/2" },
     ]},
   ]
 
@@ -58,29 +54,40 @@ function Sidebar({ isOpen, openLogout,isCollapsed,setIsCollapsed  }:sidebar) {
 <div
   className={`
     h-screen bg-white text-black dark:bg-black dark:text-white p-5
-    fixed top-0 left-0 z-40 flex flex-col justify-between
-    transform transition-all duration-500 ease-in-out 
-
+    fixed top-0 left-0 z-50 flex flex-col justify-between
+    transition-all duration-300 ease-in-out
     ${isOpen ? "translate-x-0" : "-translate-x-full"}
-    ${isCollapsed ? "w-20" : "w-64"}
+    ${isCollapsed ? "w-20" : "w-60"}
+    md:translate-x-0
   `}
 >
   <div>
-      <div className={`flex mb-3 ${isCollapsed ? "flex-col items-center-2": "flex-row -items-center justify-between"}`}>
-        <div className="flex justify-end mb-0">
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 bg-blue-500 text-white rounded-md 
-            transition-all duration-200 ease-in-out
-            hover:scale-110 active:scale-95"
-          >
-            <Menu size={20} />
-          </button>
-        </div>
-        <p className="text-xl font-bold">
-          {isCollapsed ? "TT" : "Tiny Todds"}
-        </p>
-      </div>
+<div
+  className={`flex mb-3 ${
+    isCollapsed
+      ? "flex-col items-center"
+      : "flex-row items-center justify-between"
+  }`}
+>
+  <button
+    onClick={() => setIsCollapsed(!isCollapsed)}
+    className="p-2 bg-blue-500 text-white rounded-md
+    transition-all duration-200 hover:scale-110"
+  >
+    <Menu size={20} />
+  </button>
+
+  {!isCollapsed && (
+    <p className="text-xl font-bold">Tiny Todds</p>
+  )}
+
+  <button
+    onClick={() => isOpen}
+    className="md:hidden p-2 rounded-md bg-white hover:bg-gray-200 dark:hover:bg-gray-700"
+  >
+    <X size={10} />
+  </button>
+</div>
 
     <div className="space-y-2">
       {menuItems.map((item, index) => (
@@ -173,16 +180,6 @@ className={({ isActive }) =>
         <LogOut size={20} />
         {!isCollapsed  && <span>Logout</span>}
       </button>
-{/* 
-      <button
-        onClick={toggleTheme}
-        className="p-2 rounded-full text-black
-        bg-white dark:bg-black dark:text-white  
-        transition-all duration-200
-        hover:scale-110 hover:bg-blue-500 hover:text-white"
-      >
-        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-      </button> */}
 
     </div>
   </div>

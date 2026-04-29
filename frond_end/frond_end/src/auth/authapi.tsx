@@ -9,6 +9,15 @@ export const loginApi = async (Email: string, Password: string) => {
   return response.data
 }
 
+export const logoutApi = async (token: string) => {
+  const response = await axiosInstance.post("/logout/", {},       
+    {headers:{
+            Authorization:`Bearer ${token}`
+        } } )
+
+  return response.data
+}
+
 export const registerApi = async (Name:string,Email: string, Password: string) => {
   const response = await axiosInstance.post("/register/", {
     Name,
@@ -39,8 +48,9 @@ export const UserGetApi = async(token:string)=>{
     return response.data
 }
 
+
 export const questionapiApi = async (id:number,token:string) => {
-  const response = await axiosInstance.get(`/questions/${id}`, {
+  const response = await axiosInstance.get(`/questions/${id}/`, {
         headers:{
             Authorization:`Bearer ${token}`
         }   
@@ -63,5 +73,14 @@ export const userdashboardApi = async (token:string) => {
             Authorization:`Bearer ${token}`
         }   
     })
+  return response.data
+}
+
+export const submitModelResultsApi = async (modelId: number, results: any[], token: string) => {
+  const response = await axiosInstance.post(`/model/complete/${modelId}/`, { results }, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
   return response.data
 }
